@@ -10,6 +10,7 @@
   <title>Login Recibo</title>
 </head>
 <body>
+{% include "components/notifications.twig" %}
   <div class="d-flex justify-content-center align-items-center" style="height: 100vh; background-color: #b3b3b3">
     <div class="central-div d-block border rounded">
       <div id="logo" class="flex-child">
@@ -18,9 +19,9 @@
       <div id="data-login" class="flex-child flex-column">
         <h2>Login</h2>
         <br>
-        <form method="post" action="#" class="w-75">
+        <form method="post" action="" class="w-75">
           <div class="form-group">
-            <input type="text" name="login" class="form-control" placeholder="Usuário"/>
+            <input type="text" name="username" class="form-control" placeholder="Usuário"/>
             <br>
             <input type="password" name="password" class="form-control" placeholder="Senha"/>
             <br>
