@@ -74,6 +74,10 @@ $container['AuthController'] = function($container) {
   return new App\Controllers\AuthController($container);
 };
 
+$container['TestLoginController'] = function($container) {
+  return new App\Controllers\TestLoginController($container);
+};
+
 
 $app->add(new App\Middleware\DisplayInputErrorsMiddleware($container));
 

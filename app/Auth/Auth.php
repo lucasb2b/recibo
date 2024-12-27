@@ -29,8 +29,7 @@ class Auth {
       return false;
     }
 
-    $_SESSION['user'] = $user->id;
-
+    $_SESSION['user'] = $user->id_user;
     return true;
   }
 }
