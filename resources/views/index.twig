@@ -4,15 +4,79 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" href="{{ base_url }}/css/bootstrap.min.css"/>
+  <link rel="stylesheet" type="text/css" href="{{ base_url }}/css/font-awesome.min.css" />
   <script src="{{ base_url }}/libs/jquery-3.7.1.min.js"></script>
   <script src="{{ base_url }}/js/bootstrap.min.js"></script>
   <title>Home - Recibo</title>
 </head>
-<body>
-  index aqui, tela inicial
+<body style="background-color: #d6d6d6">
+<header class="p-2" style="background-color: #783d12;">
+  <div class="container">
+    <img src="{{ base_url }}/img/Tipografia.png" class="img-fluid mx-auto d-block" style="width: 40%; padding: 15px; border-radius: 5px" alt="Logo Cabeçote 100%"/>
+  </div>
+</header>
+  <nav class="navbar navbar-expand-lg navbar-light mb-5" style="background-color: #FFA006;">
+    <a class="navbar-brand" href="#">Cabeçote 100%</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Empresa</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Cliente</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Produtos e Serviços</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Recibos</a>
+        </li>
+      </ul>
+      <span class="navbar-text">
+        <i>Sistema para emissão de recibos</i>
+      </span>
+    </div>
+  </nav>
+  <h4 class="text-center" style="margin-top: -30px">Bem vindo ao sistema de emissão recibos</h4>
+  <h6 class="text-center" style="margin-top:0">Últimos recibos emitidos</h6>
+  <hr>
+  
+  <h4 class="text-center">Algumas tarefas</h4>
+  <div class="container mb-5">
 
-  deu certo o login
+  <div class="row justify-content-center">
 
-  {{auth.user.username}}
+    <div class="col-md-3 m-2">
+
+      <div class="card text-center" style="width: 18rem;">
+      <div class="card-body">
+        <h5 class="card-title">Gerenciar Clientes</h5>
+        <p class="card-text">Cadastre, edite e exclua um cliente para gerenciar.</p>
+        <a href="#" class="btn btn-primary"><i class="fa fa-user-o" aria-hidden="true"></i>Gerenciar Clientes</a>
+      </div>
+
+    </div>
+
+    </div>
+    <div class="col-md-3 m-2">
+      <div class="card text-center" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title">Produtos e Serviços</h5>
+          <p class="card-text">Cadastre e edite produtos, apague e gerencie produtos!</p>
+          <a href="#" class="btn btn-primary">Produtos e Serviços</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  </div>
+
+</div>
 </body>
 </html>
