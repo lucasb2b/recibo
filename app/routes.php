@@ -13,6 +13,10 @@ $app->group('/auth', function($app){
   $app->get('/logout', 'AuthController:logout')->setName('auth.logout');
 });
 
+$app->group('/company', function($app){
+  $app->get('', 'CompanyController:company')->setName('company.index');
+})->add(new AuthMiddleware($container));
+
 $app->group('/testlogin', function($app) {
   $app->map(['GET', 'POST'], '/test', 'TestController:index')->setName('test.index');
 })->add(new AuthMiddleware($container));
