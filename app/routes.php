@@ -14,7 +14,8 @@ $app->group('/auth', function($app){
 });
 
 $app->group('/company', function($app){
-  $app->get('', 'CompanyController:company')->setName('company.index');
+  $app->map(['GET', 'POST'], '', 'CompanyController:company')->setName('company.index');
+  //$app->post('/createCompany', 'CompanyController:createCompany')->setName('company.create');
 })->add(new AuthMiddleware($container));
 
 $app->group('/testlogin', function($app) {

@@ -41,6 +41,10 @@ $container['flash'] = function($container){
   return new Slim\Flash\Messages;
 };
 
+$container['validator'] = function($container) {
+  return new App\Validation\Validator;
+};
+
 $container['auth'] = function($container){
   return new App\Auth\Auth($container);
 } ;
@@ -81,6 +85,8 @@ $container['CompanyController'] = function($container){
 $container['TestLoginController'] = function($container) {
   return new App\Controllers\TestLoginController($container);
 };
+
+$container['upload_directory'] = __DIR__ . '/../public/uploads';
 
 
 $app->add(new App\Middleware\DisplayInputErrorsMiddleware($container));

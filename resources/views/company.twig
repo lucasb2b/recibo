@@ -47,55 +47,68 @@
   <h4 class="text-center" style="margin-top: -30px">Dados da Empresa</h4>
   <h6 class="text-center" style="margin-top:0">Gerenciar os dados da Empresa</h6>
 
+  {% include "components/notifications.twig" %}
+
   <div class="container">
-    <form method="POST">
+    <form action="" method="POST" enctype="multipart/form-data">
 
       <div class="form-row"> <!-- Ínicio -->
-        <div class="col">
+        <div class="form-group col-md-4">
           <label for="company">Nome Fantasia</label>
-          <input type="text" class="form-control" id="company">
+          <input type="text" class="form-control" id="company" name="company-name">
         </div>
 
-        <div class="col">
+        <div class="form-group col-md-4">
           <label for="cnpj">CNPJ</label>
-          <input type="text" class="form-control" id="cnpj">
+          <input type="text" class="form-control" id="cnpj" name="cnpj">
         </div>
 
-        <div class="col">
+        <div class="form-group col-md-4">
           <label for="ie">Inscrição Estadual  ou CF/DF</label>
-          <input type="text" class="form-control" id="ie">
+          <input type="text" class="form-control" id="ie" name="ie-cfdf">
         </div>
       </div> <!-- Fim do form-row -->
       
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <label for="logradouro">Logradouro</label>
+          <input type="text" class="form-control" id="logradouro" name="logradouro">
+        </div>
+        <div class="form-group col-md-4">
+          <label for="postal-code">CEP</label>
+          <input type="text" class="form-control" id="postal-code" name="postal-code">
+        </div>
+        <div class="form-group col-md-4">
+          <label for="number">Número</label>
+          <input type="text" class="form-control" id="number" name="numero">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-md-3">
+          <label for="district">Bairro</label>
+          <input type="text" class="form-control" id="district" name="district">
+        </div>
+        <div class="form-group col-md-3">
+          <label for="city">Cidade</label>
+          <input type="text" class="form-control" id="city" name="city">
+        </div>
+        <div class="form-group col-md-3">
+          <label for="Estado">Estado</label>
+          <input type="text" class="form-control" id="Estado" name="uf">
+        </div>
+
+        <div class="form-group col-md-3">
+          <label for="phone">Telefone</label>
+          <input type="text" class="form-control" id="phone" name="phone">
+        </div>
+      </div>
+
       <div class="form-group">
-        <label for="logradouro">Logradouro</label>
-        <input type="text" class="form-control" id="logradouro">
+        <label for="logo-upload">Logomarca</label>
+        <input type="file" class="form-control-file" id="logo-upload" name="logo" accept="image/x-png,image/gif,image/jpeg">
       </div>
-      <div class="form-group">
-        <label for="postal-code">CEP</label>
-        <input type="text" class="form-control" id="postal-code">
-      </div>
-      <div class="form-group">
-        <label for="number">Número</label>
-        <input type="text" class="form-control" id="number">
-      </div>
-      <div class="form-group">
-        <label for="district">Bairro</label>
-        <input type="text" class="form-control" id="district">
-      </div>
-      <div class="form-group">
-        <label for="city">Cidade</label>
-        <input type="text" class="form-control" id="city">
-      </div>
-      <div class="form-group">
-        <label for="Estado">Estado</label>
-        <input type="text" class="form-control" id="Estado">
-      </div>
-      <div class="form-group form-check">
-        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-        <label class="form-check-label" for="exampleCheck1">Check me out</label>
-      </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="submit" class="btn btn-primary">Cadastrar Empresa</button>
     </form>
   </div>
 </body>
