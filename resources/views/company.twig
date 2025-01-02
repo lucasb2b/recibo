@@ -47,60 +47,59 @@
   <h4 class="text-center" style="margin-top: -30px">Dados da Empresa</h4>
   <h6 class="text-center" style="margin-top:0">Gerenciar os dados da Empresa</h6>
 
-  {% include "components/notifications.twig" %}
-
   <div class="container">
+    {% include "components/notifications.twig" %}
     <form action="" method="POST" enctype="multipart/form-data">
 
       <div class="form-row"> <!-- Ínicio -->
         <div class="form-group col-md-4">
           <label for="company">Nome Fantasia</label>
-          <input type="text" class="form-control" id="company" name="company-name">
+          <input type="text" class="form-control" id="company" name="company-name" value="{{emp[0].company_name ? emp[0].company_name : ''}}">
         </div>
 
         <div class="form-group col-md-4">
           <label for="cnpj">CNPJ</label>
-          <input type="text" class="form-control" id="cnpj" name="cnpj">
+          <input type="text" class="form-control" id="cnpj" name="cnpj" value="{{emp[0].cnpj ? emp[0].cnpj : ''}}">
         </div>
 
         <div class="form-group col-md-4">
           <label for="ie">Inscrição Estadual  ou CF/DF</label>
-          <input type="text" class="form-control" id="ie" name="ie-cfdf">
+          <input type="text" class="form-control" id="ie" name="ie-cfdf" value="{{emp[0].ie_cfdf ? emp[0].ie_cfdf : ''}}">
         </div>
       </div> <!-- Fim do form-row -->
       
       <div class="form-row">
         <div class="form-group col-md-4">
           <label for="logradouro">Logradouro</label>
-          <input type="text" class="form-control" id="logradouro" name="logradouro">
+          <input type="text" class="form-control" id="logradouro" name="logradouro" value="{{emp[0].address ? emp[0].address : ''}}">
         </div>
         <div class="form-group col-md-4">
           <label for="postal-code">CEP</label>
-          <input type="text" class="form-control" id="postal-code" name="postal-code">
+          <input type="text" class="form-control" id="postal-code" name="postal-code" value="{{emp[0].postal_code ? emp[0].postal_code : ''}}">
         </div>
         <div class="form-group col-md-4">
           <label for="number">Número</label>
-          <input type="text" class="form-control" id="number" name="numero">
+          <input type="text" class="form-control" id="number" name="numero" value="{{emp[0].number ? emp[0].number : ''}}">
         </div>
       </div>
 
       <div class="form-row">
         <div class="form-group col-md-3">
           <label for="district">Bairro</label>
-          <input type="text" class="form-control" id="district" name="district">
+          <input type="text" class="form-control" id="district" name="district" value="{{emp[0].district ? emp[0].district : ''}}">
         </div>
         <div class="form-group col-md-3">
           <label for="city">Cidade</label>
-          <input type="text" class="form-control" id="city" name="city">
+          <input type="text" class="form-control" id="city" name="city" value="{{emp[0].city ? emp[0].city : ''}}">
         </div>
         <div class="form-group col-md-3">
           <label for="Estado">Estado</label>
-          <input type="text" class="form-control" id="Estado" name="uf">
+          <input type="text" class="form-control" id="Estado" name="uf" value="{{emp[0].state ? emp[0].state : ''}}">
         </div>
 
         <div class="form-group col-md-3">
           <label for="phone">Telefone</label>
-          <input type="text" class="form-control" id="phone" name="phone">
+          <input type="text" class="form-control" id="phone" name="phone" value="{{emp[0].phone ? emp[0].phone : ''}}">
         </div>
       </div>
 
@@ -108,7 +107,21 @@
         <label for="logo-upload">Logomarca</label>
         <input type="file" class="form-control-file" id="logo-upload" name="logo" accept="image/x-png,image/gif,image/jpeg">
       </div>
-      <button type="submit" class="btn btn-primary">Cadastrar Empresa</button>
+
+      {% if emp is not empty %}
+        <div class="form-row">
+          <div class="form-group col-md-3"><br>
+          <h6 class="text-center">Logomarca</h6>
+            <img src="{{ base_url }}/uploads/{{ emp[0].image }}" alt="Logo" style="width: 100%">
+          </div>
+        </div>
+        <br>
+      {% else %}
+      {% endif %}
+
+      <button type="submit" class="btn btn-primary">
+      {{ emp[0] ? 'Atualizar Empresa' : 'Cadastrar Empresa'}}
+      </button>
     </form>
   </div>
 </body>
