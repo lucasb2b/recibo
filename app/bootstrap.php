@@ -82,6 +82,10 @@ $container['CompanyController'] = function($container){
   return new App\Controllers\CompanyController($container);
 };
 
+$container['CustomerController'] = function($container){
+  return new App\Controllers\CustomerController($container);
+};
+
 $container['TestLoginController'] = function($container) {
   return new App\Controllers\TestLoginController($container);
 };

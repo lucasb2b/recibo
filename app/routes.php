@@ -18,6 +18,10 @@ $app->group('/company', function($app){
   //$app->post('/createCompany', 'CompanyController:createCompany')->setName('company.create');
 })->add(new AuthMiddleware($container));
 
+$app->group('/customer', function($app){
+  $app->map(['GET', 'POST'], '', 'CustomerController:customer')->setName('customer.index');
+});
+
 $app->group('/testlogin', function($app) {
   $app->map(['GET', 'POST'], '/test', 'TestController:index')->setName('test.index');
 })->add(new AuthMiddleware($container));
