@@ -15,7 +15,8 @@ class Customer extends Model {
   protected $fillable = [
     'customer_name',
     'cpf_cnpj',
-    'telephone'
+    'telephone',
+    'is_active'
   ];
   
 }

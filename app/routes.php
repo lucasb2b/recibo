@@ -20,6 +20,11 @@ $app->group('/company', function($app){
 
 $app->group('/customer', function($app){
   $app->map(['GET', 'POST'], '', 'CustomerController:customer')->setName('customer.index');
+  $app->map(['GET', 'POST'], '/manager', 'CustomerController:managerCustomer')->setName('customer.manager');
+  $app->get('/manager/edit/{id}', 'CustomerController:edit')->setName('customer.edit');
+  $app->post('/manager/edit/{id}', 'CustomerController:update');
+  $app->get('/manager/delete/{id}', 'CustomerController:delete')->setName('customer.delete');
+
 });
 
 $app->group('/testlogin', function($app) {
