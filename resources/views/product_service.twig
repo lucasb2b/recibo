@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" type="text/css" href="{{ base_url }}/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="{{ base_url }}/libs/fontawesome-free-5.15.4-web/css/all.min.css">
+  <link rel="stylesheet" href="{{ base_url }}/libs/fontawesome-free-5.15.4-web/js/all.min.js">
+  <script src="{{ base_url }}/libs/jquery-3.7.1.min.js"></script>
+  <script src="{{ base_url }}/js/bootstrap.min.js"></script>
+  <title>Cliente - Recibo</title>
+</head>
+<body style="background-color: #d6d6d6">
+<header class="p-2" style="background-color: #783d12;">
+  <div class="container">
+    <img src="{{ base_url }}/img/Tipografia.png" class="img-fluid mx-auto d-block" style="width: 40%; padding: 15px; border-radius: 5px" alt="Logo Cabeçote 100%"/>
+  </div>
+</header>
+  <nav class="navbar navbar-expand-lg navbar-light mb-5" style="background-color: #FFA006;">
+    <a class="navbar-brand" href="#">Cabeçote 100%</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="{{ path_for('home') }}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ path_for('company.index') }}">Empresa</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Cliente</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Produtos e Serviços<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Recibos</a>
+        </li>
+      </ul>
+      <span class="navbar-text">
+        <i>Sistema para emissão de recibos</i>
+      </span>
+    </div>
+  </nav>
+  <h4 class="text-center" style="margin-top: -30px">Produtos e serviços</h4>
+  <h6 class="text-center" style="margin-top:0">Gerenciar produtos e serviços</h6>
+
+  <div class="container">
+    {% include "components/notifications.twig" %}
+    <form action="" method="POST" enctype="multipart/form-data">
+      <div class="form-row">
+        <div class="form-group col-md-3">
+          <label for="nome">Serviço ou produto</label>
+          <input type="text" class="form-control" id="nome" name="product_service">
+        </div>
+        <div class="form-group col-md-3">
+          <label for="ps">Tipo de item</label>
+          <select name="item-type" class="form-control" id="ps">
+            <option value="Produto">Produto</option>
+            <option value="Serviço">Serviço</option>
+          </select>
+        </div>
+        <div class="form-group col-md-3">
+          <label for="price">Preço</label>
+          <input type="text" class="form-control" id="price" name="price">
+        </div>
+        <div class="form-group col-md-3">
+          <label for="ts">Tipo de unidade de item</label>
+          <input type="text" class="form-control" id="ts" name="units">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <button type="submit" class="btn btn-primary"><i class="fas fa-cubes"></i>&nbsp;Cadastrar Produto ou Serviço</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

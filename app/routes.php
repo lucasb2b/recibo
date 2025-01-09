@@ -27,6 +27,11 @@ $app->group('/customer', function($app){
 
 });
 
+$app->group('/productsServices', function($app){
+  $app->map(['GET', 'POST'], '', 'ProductServiceController:productService')->setName('productService.index');
+  $app->map(['GET', 'POST'], '/manager', 'ProductServiceController:managerProductService')->setName('productService.manager');
+});
+
 $app->group('/testlogin', function($app) {
   $app->map(['GET', 'POST'], '/test', 'TestController:index')->setName('test.index');
 })->add(new AuthMiddleware($container));
