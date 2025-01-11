@@ -29,11 +29,11 @@
         <li class="nav-item">
           <a class="nav-link" href="{{ path_for('company.index') }}">Empresa</a>
         </li>
-        <li class="nav-item active">
-          <a class="nav-link" href="#">Cliente<span class="sr-only">(current)</span></a>
-        </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Produtos e Serviços</a>
+          <a class="nav-link" href="#">Cliente</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Produtos e Serviços<span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Recibos</a>
@@ -44,40 +44,39 @@
       </span>
     </div>
   </nav>
-  <h4 class="text-center" style="margin-top: -30px">Produtos e Serviços Cadastrados</h4>
-  <h6 class="text-center" style="margin-top:0">Gerenciar os produtos e/ou serviços</h6>
+  <h4 class="text-center" style="margin-top: -30px">Editar Produto e/ou Serviço</h4>
+  <h6 class="text-center" style="margin-top:0">Gerenciar produtos e serviços</h6>
 
   <div class="container">
     {% include "components/notifications.twig" %}
-    <table class="table table-hover table-dark">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Produto e/ou Serviço</th>
-          <th scope="col">Tipo de Item</th>
-          <th scope="col">Tipo de Unidade</th>
-          <th scope="col">Preço</th>
-          <th scope="col">Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-
-      {% for productsService in productsServices %}
-        <tr>
-          <td>{{ loop.index }}</td>
-          <td>{{ productsService.product_service }}</td>
-          <td>{{ productsService.type }}</td>
-          <td>{{ productsService.units }}</td>
-          <td>R${{ productsService.price }}</td>
-          <td>
-          <a href="{{ path_for('productService.edit', { 'id': productsService.id_product_service }) }}" class="btn btn-warning">Editar</a>
-          <a href="{{ path_for('productService.delete', { 'id': productsService.id_product_service }) }}" class="btn btn-danger">Excluir</a>
-          </td>
-        </tr>
-      {% else %}
-      {% endfor %}
-      </tbody>
-    </table>
+    <form action="{{ path_for('productService.edit', {'id': productService[0].id_product_service })}}" method="POST" enctype="multipart/form-data">
+      <div class="form-row">
+        <div class="form-group col-md-3">
+          <label for="nome">Serviço ou produto</label>
+          <input type="text" class="form-control" id="nome" name="product_service" value="{{ productService[0].product_service }}">
+        </div>
+        <div class="form-group col-md-3">
+          <label for="ps">Tipo de item</label>
+          <select name="item-type" class="form-control" id="ps">
+            <option value="Produto" {{ productService[0].type == 'Produto' ? 'selected' : '' }}>Produto</option>
+            <option value="Serviço" {{ productService[0].type == 'Serviço' ? 'selected' : '' }}>Serviço</option>
+          </select>
+        </div>
+        <div class="form-group col-md-3">
+          <label for="price">Preço</label>
+          <input type="text" class="form-control" id="price" name="price" value="{{ productService[0].price }}">
+        </div>
+        <div class="form-group col-md-3">
+          <label for="ts">Tipo de unidade de item</label>
+          <input type="text" class="form-control" id="ts" name="units" value="{{ productService[0].units }}">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <button type="submit" class="btn btn-primary"><i class="fas fa-cubes"></i>&nbsp;Editar Produto ou Serviço</button>
+        </div>
+      </div>
+    </form>
   </div>
 </body>
 </html>

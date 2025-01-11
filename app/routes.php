@@ -30,6 +30,9 @@ $app->group('/customer', function($app){
 $app->group('/productsServices', function($app){
   $app->map(['GET', 'POST'], '', 'ProductServiceController:productService')->setName('productService.index');
   $app->map(['GET', 'POST'], '/manager', 'ProductServiceController:managerProductService')->setName('productService.manager');
+  $app->get('/manager/edit/{id}', 'ProductServiceController:edit')->setName('productService.edit');
+  $app->post('/manager/edit/{id}', 'ProductServiceController:update');
+  $app->get('/manager/delete/{id}', 'ProductServiceController:delete')->setName('productService.delete');
 });
 
 $app->group('/testlogin', function($app) {

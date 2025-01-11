@@ -16,6 +16,7 @@ class ProductService extends Model {
     'product_service',
     'type',
     'price',
-    'units'
+    'units',
+    'is_active'
   ];
 }
