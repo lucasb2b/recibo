@@ -93,4 +93,12 @@ class ProductServiceController extends Controller {
       return $response->withRedirect($this->container->router->pathFor('productService.manager'));
     }
   }
+
+  public function allProductsServices($request, $response){
+    $productsServices = [
+      'productsServices' => ProductService::where('is_active', true)->get()
+    ];
+
+    return $response->withJson($productsServices);
+  }
 }

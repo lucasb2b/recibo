@@ -90,6 +90,10 @@ $container['ProductServiceController'] = function($container) {
   return new App\Controllers\ProductServiceController($container);
 };
 
+$container['InvoiceController'] = function($container) {
+  return new App\Controllers\InvoiceController($container);
+};
+
 $container['TestLoginController'] = function($container) {
   return new App\Controllers\TestLoginController($container);
 };

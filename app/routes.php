@@ -25,7 +25,7 @@ $app->group('/customer', function($app){
   $app->post('/manager/edit/{id}', 'CustomerController:update');
   $app->get('/manager/delete/{id}', 'CustomerController:delete')->setName('customer.delete');
 
-});
+})->add(new AuthMiddleware($container));
 
 $app->group('/productsServices', function($app){
   $app->map(['GET', 'POST'], '', 'ProductServiceController:productService')->setName('productService.index');
@@ -33,6 +33,15 @@ $app->group('/productsServices', function($app){
   $app->get('/manager/edit/{id}', 'ProductServiceController:edit')->setName('productService.edit');
   $app->post('/manager/edit/{id}', 'ProductServiceController:update');
   $app->get('/manager/delete/{id}', 'ProductServiceController:delete')->setName('productService.delete');
+})->add(new AuthMiddleware($container));
+
+$app->group('/invoice', function($app){
+  $app->map(['GET', 'POST'], '', 'InvoiceController:invoice')->setName('invoice.index');
+})->add(new AuthMiddleware($container));
+
+$app->group('/api', function($app){
+  $app->get('/customers', 'CustomerController:allCustomers');
+  $app->get('/productsServices', 'ProductServiceController:allProductsServices');
 });
 
 $app->group('/testlogin', function($app) {

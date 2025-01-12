@@ -93,4 +93,12 @@ class CustomerController extends Controller {
     }
   }
 
+  public function allCustomers($request, $response){
+    $customers = [
+      'customers' => Customer::where('is_active', true)->get()
+    ];
+
+    return $response->withJson($customers);
+  }
+
 }
