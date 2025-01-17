@@ -101,4 +101,13 @@ class ProductServiceController extends Controller {
 
     return $response->withJson($productsServices);
   }
+
+  public function findById($request, $response){
+
+    $idProduct = $request->getParam('product_id');
+
+    $productPrice = ProductService::where('id_product_service', $idProduct)->value('price');
+
+    return $response->withJson($productPrice);
+  }
 }

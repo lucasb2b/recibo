@@ -42,6 +42,7 @@ $app->group('/invoice', function($app){
 $app->group('/api', function($app){
   $app->get('/customers', 'CustomerController:allCustomers');
   $app->get('/productsServices', 'ProductServiceController:allProductsServices');
+  $app->post('/productService', 'ProductServiceController:findById');
 });
 
 $app->group('/testlogin', function($app) {
