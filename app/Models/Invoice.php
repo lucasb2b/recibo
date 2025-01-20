@@ -23,4 +23,8 @@ class Invoice extends Model {
     'qr_code_hash',
     'datetime'
   ];
+
+  public function customer(){
+    return $this->belongsTo(Customer::class, 'customer_id_client');
+  }
 }
