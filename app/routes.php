@@ -37,6 +37,7 @@ $app->group('/productsServices', function($app){
 
 $app->group('/invoice', function($app){
   $app->map(['GET', 'POST'], '', 'InvoiceController:invoice')->setName('invoice.index');
+  $app->post('/create', 'InvoiceController:create')->setName('invoice.create');
 })->add(new AuthMiddleware($container));
 
 $app->group('/api', function($app){

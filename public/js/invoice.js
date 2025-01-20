@@ -30,11 +30,11 @@ $.ajax({
     $('#product5').empty().append('<option value="">Produto ou serviço</option>');
 
     $.each(productsServices, function(index, productService){
-      $('#product1').append(`<option value="${productService.id_product_service}">${productService.product_service}</option>`);
-      $('#product2').append(`<option value="${productService.id_product_service}">${productService.product_service}</option>`);
-      $('#product3').append(`<option value="${productService.id_product_service}">${productService.product_service}</option>`);
-      $('#product4').append(`<option value="${productService.id_product_service}">${productService.product_service}</option>`);
-      $('#product5').append(`<option value="${productService.id_product_service}">${productService.product_service}</option>`);
+      $('#product1').append(`<option value="${productService.id_product_service}" data-name="${productService.product_service}" data-units=${productService.units}>${productService.product_service}</option>`);
+      $('#product2').append(`<option value="${productService.id_product_service}" data-name="${productService.product_service}" data-units=${productService.units}>${productService.product_service}</option>`);
+      $('#product3').append(`<option value="${productService.id_product_service}" data-name="${productService.product_service}" data-units=${productService.units}>${productService.product_service}</option>`);
+      $('#product4').append(`<option value="${productService.id_product_service}" data-name="${productService.product_service}" data-units=${productService.units}>${productService.product_service}</option>`);
+      $('#product5').append(`<option value="${productService.id_product_service}" data-name="${productService.product_service}" data-units=${productService.units}>${productService.product_service}</option>`);
     });    
   },
   error: function(xhr, status, error){
