@@ -4,7 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Company extends Model {
+class Company extends Model
+{
 
   protected $table = 'company';
 
@@ -25,4 +26,9 @@ class Company extends Model {
     'phone',
     'image'
   ];
+
+  public function invoices()
+  {
+    return $this->hasMany(Invoice::class, 'company_id_company', 'id_company');
+  }
 }

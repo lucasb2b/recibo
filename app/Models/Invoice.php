@@ -4,7 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Invoice extends Model {
+class Invoice extends Model
+{
 
   protected $table = 'invoice';
 
@@ -24,7 +25,18 @@ class Invoice extends Model {
     'datetime'
   ];
 
-  public function customer(){
-    return $this->belongsTo(Customer::class, 'customer_id_client');
+  public function company()
+  {
+    return $this->belongsTo(Company::class, 'company_id_company', 'id_company');
+  }
+
+  public function customer()
+  {
+    return $this->belongsTo(Customer::class, 'customer_id_client', 'id_client');
+  }
+
+  public function items()
+  {
+    return $this->hasMany(ItemInvoice::class, 'invoice_id_invoice', 'id_invoice');
   }
 }

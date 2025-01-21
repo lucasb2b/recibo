@@ -5,16 +5,23 @@ namespace App\Controllers;
 use App\Models\Invoice;
 use App\Models\ItemInvoice;
 use Exception;
+use Mike42\Escpos\PrintConnectors\FilePrintConnector;
 use Respect\Validation\Validator as v;
 
-class InvoiceController extends Controller {
+use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
+use Mike42\Escpos\Printer;
 
-  public function invoice($request, $response){
-    if($request->isGet())
+class InvoiceController extends Controller
+{
+
+  public function invoice($request, $response)
+  {
+    if ($request->isGet())
       return $this->container->view->render($response, 'invoice.twig');
   }
 
-  public function create($request, $response){
+  public function create($request, $response)
+  {
     $data = $request->getParsedBody();
 
     // Dividir o JSON em duas partes, uma para os dados do invoice, outra para produtos
@@ -38,7 +45,7 @@ class InvoiceController extends Controller {
         'datetime' => date('Y-m-d H:i:s')
       ]);
 
-      foreach($productsData as $product) {
+      foreach ($productsData as $product) {
         ItemInvoice::create([
           'item_name' => $product['productName'],
           'quantity' => $product['quantity'],
@@ -57,4 +64,63 @@ class InvoiceController extends Controller {
     return $response->withRedirect($this->container->router->pathFor('home'));
   }
 
+  function removerAcentos($string)
+  {
+    $acentos = [
+      'á' => 'a',
+      'à' => 'a',
+      'ã' => 'a',
+      'â' => 'a',
+      'ä' => 'a',
+      'é' => 'e',
+      'è' => 'e',
+      'ê' => 'e',
+      'ë' => 'e',
+      'í' => 'i',
+      'ì' => 'i',
+      'î' => 'i',
+      'ï' => 'i',
+      'ó' => 'o',
+      'ò' => 'o',
+      'õ' => 'o',
+      'ô' => 'o',
+      'ö' => 'o',
+      'ú' => 'u',
+      'ù' => 'u',
+      'û' => 'u',
+      'ü' => 'u',
+      'ç' => 'c',
+      'ñ' => 'n',
+    ];
+    return strtr($string, $acentos);
+  }
+
+  public function print($request, $response, $params)
+  {
+    // Obter invoice com base no hash
+    $hash = $params['hash'];
+    $invoice = Invoice::where('hash', $hash)
+      ->with(['company', 'customer', 'items'])
+      ->first();
+
+    try {
+      $printerName = "POS58 Printer";
+      $connector = new FilePrintConnector("./ok.txt");
+      $printer = new Printer($connector);
+
+      // Cabeçalho do recibo
+      $printer->initialize();
+      $printer->setJustification(Printer::JUSTIFY_CENTER);
+      $printer->selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
+      $printer->text($this->removerAcentos($invoice->company->company_name));
+      $printer->feed();
+      $printer->pulse();
+      $printer->selectPrintMode();
+      $printer->text("CNPJ - " + $invoice->company->cnpj + "\n");
+      $printer->text("CF/DF - " + $invoice->company->ie_cfdf + "\n");
+
+    } finally {
+      $printer->close();
+    }
+  }
 }
