@@ -4,12 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Invoice;
 use App\Models\ItemInvoice;
-use Exception;
-use Mike42\Escpos\PrintConnectors\FilePrintConnector;
-use Respect\Validation\Validator as v;
-
-use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
-use Mike42\Escpos\Printer;
+use FPDF;
 
 class InvoiceController extends Controller
 {
@@ -27,10 +22,6 @@ class InvoiceController extends Controller
     // Dividir o JSON em duas partes, uma para os dados do invoice, outra para produtos
     $generalData = $data['generalData'];
     $productsData = $data['productsData'];
-
-    //return $response->withJson($productsData);
-
-    //die();
 
     try {
       $invoice = Invoice::create([
@@ -97,30 +88,49 @@ class InvoiceController extends Controller
 
   public function print($request, $response, $params)
   {
-    // Obter invoice com base no hash
-    $hash = $params['hash'];
-    $invoice = Invoice::where('hash', $hash)
-      ->with(['company', 'customer', 'items'])
-      ->first();
+    $pdf = new FPDF('P', 'mm', [48, 297]); // Configurar página para 58mm de largura
+    $pdf->SetMargins(2, 2, 2); // Margens
+    $pdf->AddPage();
 
-    try {
-      $printerName = "POS58 Printer";
-      $connector = new FilePrintConnector("./ok.txt");
-      $printer = new Printer($connector);
+    // Cabeçalho
+    $pdf->SetFont('Arial', 'B', 12);
+    $pdf->Cell(0, 5, 'Minha Loja', 0, 1, 'C');
+    $pdf->SetFont('Arial', '', 10);
+    $pdf->Cell(0, 5, 'Rua Exemplo, 123', 0, 1, 'C');
+    $pdf->Cell(0, 5, 'Telefone: (99) 9999-9999', 0, 1, 'C');
+    $pdf->Ln(5);
 
-      // Cabeçalho do recibo
-      $printer->initialize();
-      $printer->setJustification(Printer::JUSTIFY_CENTER);
-      $printer->selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
-      $printer->text($this->removerAcentos($invoice->company->company_name));
-      $printer->feed();
-      $printer->pulse();
-      $printer->selectPrintMode();
-      $printer->text("CNPJ - " + $invoice->company->cnpj + "\n");
-      $printer->text("CF/DF - " + $invoice->company->ie_cfdf + "\n");
+    // Itens
+    $pdf->SetFont('Arial', '', 9);
+    $pdf->Cell(40, 5, 'Produto', 1, 0, 'L');
+    $pdf->Cell(10, 5, 'Qtd', 1, 0, 'C');
+    $pdf->Cell(15, 5, 'Total', 1, 1, 'R');
 
-    } finally {
-      $printer->close();
+    $itens = [
+      ['Produto A', 2, '10.00'],
+      ['Produto B', 1, '5.00']
+    ];
+
+    foreach ($itens as $item) {
+      $pdf->Cell(40, 5, $item[0], 1, 0, 'L');
+      $pdf->Cell(10, 5, $item[1], 1, 0, 'C');
+      $pdf->Cell(15, 5, $item[2], 1, 1, 'R');
     }
+
+    // Total
+    $pdf->Ln(5);
+    $pdf->SetFont('Arial', 'B', 10);
+    $pdf->Cell(50, 5, 'TOTAL:', 0, 0, 'R');
+    $pdf->Cell(15, 5, '15.00', 0, 1, 'R');
+
+    // Mensagem final
+    $pdf->Ln(10);
+    $pdf->SetFont('Arial', '', 9);
+    $pdf->Cell(0, 5, 'Obrigado pela preferencia!', 0, 1, 'C');
+    $pdf->Cell(0, 5, 'Volte sempre!', 0, 1, 'C');
+
+    // Saída
+    $pdf->Output();
+    exit;
   }
 }

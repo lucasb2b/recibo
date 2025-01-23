@@ -16,7 +16,8 @@
         "slim/flash": "^0.4.0",
         "phpmailer/phpmailer": "^6.0",
 	"dompdf/dompdf": "^2.0.8",
-	"mike42/escpos-php": "^4.0"
+	"mike42/escpos-php": "^4.0",
+        "setasign/fpdf": "^1.8"
     },
     "autoload": {
         "psr-4": {
