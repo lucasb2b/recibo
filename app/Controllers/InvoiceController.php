@@ -88,17 +88,45 @@ class InvoiceController extends Controller
 
   public function print($request, $response, $params)
   {
+
+    # Buscar os dados do recibo
+    $invoice = Invoice::where('hash', $params['hash'])
+      ->with(['company', 'customer', 'items'])
+      ->first();
+
+
     $pdf = new FPDF('P', 'mm', [48, 297]); // Configurar página para 58mm de largura
-    $pdf->SetMargins(2, 2, 2); // Margens
+    $pdf->SetMargins(0, 2, 0); // Margens
     $pdf->AddPage();
 
+    // Imagem do Cabeçalho
+    $imagePath = $this->container->get('upload_directory') . '/' . $invoice->company->image;
+    $pdf->Image($imagePath, 14);
+
     // Cabeçalho
-    $pdf->SetFont('Arial', 'B', 12);
-    $pdf->Cell(0, 5, 'Minha Loja', 0, 1, 'C');
-    $pdf->SetFont('Arial', '', 10);
-    $pdf->Cell(0, 5, 'Rua Exemplo, 123', 0, 1, 'C');
-    $pdf->Cell(0, 5, 'Telefone: (99) 9999-9999', 0, 1, 'C');
-    $pdf->Ln(5);
+    $pdf->SetFont('Helvetica', 'B', 12);
+    $pdf->Cell(0, 5, utf8_decode($invoice->company->company_name), 0, 1, 'C');
+    $pdf->SetFont('Helvetica', '', 8);
+    $pdf->Cell(0, 7, "CNPJ: " . $invoice->company->cnpj, 0, 1, 'L');
+    $pdf->Cell(0, 0, "CF/DF:" . $invoice->company->ie_cfdf, 0, 1, 'L');
+    $pdf->Cell(0, 7, $invoice->company->address . ", " . $invoice->company->number, 0, 1, 'L');
+    $pdf->Cell(0, 0, "CEP: " . $invoice->company->postal_code, 0, 1, 'L');
+    $pdf->Cell(0, 7, utf8_decode($invoice->company->district), 0, 1, 'L');
+    $pdf->Cell(0, 0, utf8_decode($invoice->company->city) . " - " . $invoice->company->state, 0, 1, 'L');
+    $pdf->Cell(0, 7, $invoice->company->phone, 0, 1, 'L');
+    $pdf->Ln(3);
+
+    $pdf->SetFont('Helvetica', '', 8);
+    $pdf->Cell(0, 0, "Cliente: " . utf8_decode($invoice->customer->customer_name), 0, 1, 'L');
+    $pdf->Cell(0, 7, "CPF/CNPJ: " . utf8_decode($invoice->customer->cpf_cnpj), 0, 1, 'L');
+    $pdf->Cell(0, 0, "Telefone: " . utf8_decode($invoice->customer->telephone), 0, 1, 'L');
+    $pdf->Ln(3);
+
+    $pdf->SetFont('Helvetica', '', 8);
+    $pdf->Cell(0, 7, "Data: " . date("d/m/Y H:i:s", strtotime($invoice->datetime)), 0, 1, 'L');
+    $pdf->Cell(0, 0, "Tipo de pagamento: " . $invoice->payment_type, 0, 1, 'L');
+    $pdf->Ln(2);
+
 
     // Itens
     $pdf->SetFont('Arial', '', 9);
