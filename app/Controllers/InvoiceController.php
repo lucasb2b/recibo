@@ -127,22 +127,30 @@ class InvoiceController extends Controller
     $pdf->Cell(0, 0, "Tipo de pagamento: " . $invoice->payment_type, 0, 1, 'L');
     $pdf->Ln(2);
 
+    $pdf->SetFont('Courier', 'B', 8);
+    $pdf->Cell(0, 7, utf8_decode("-- PRODUTOS E/OU SERVIÇOS --"), 0, 1, 'C');
+    $pdf->Ln(1);
 
-    // Itens
-    $pdf->SetFont('Arial', '', 9);
-    $pdf->Cell(40, 5, 'Produto', 1, 0, 'L');
-    $pdf->Cell(10, 5, 'Qtd', 1, 0, 'C');
-    $pdf->Cell(15, 5, 'Total', 1, 1, 'R');
+    # Produtos e ou serviços
 
-    $itens = [
-      ['Produto A', 2, '10.00'],
-      ['Produto B', 1, '5.00']
-    ];
+    foreach ($invoice->items as $item) {
+      // Descrição dos produtos
+      #$pdf->setFont('Courier', 'B', 7);
+      #$pdf->Cell(48, 3, utf8_decode("Produto ou Serviço"), 1, 1, 'C');
+      $pdf->setFont('Helvetica', '', 7);
+      $pdf->Cell(48, 3, utf8_decode($item->item_name), 0, 1, 'C');
 
-    foreach ($itens as $item) {
-      $pdf->Cell(40, 5, $item[0], 1, 0, 'L');
-      $pdf->Cell(10, 5, $item[1], 1, 0, 'C');
-      $pdf->Cell(15, 5, $item[2], 1, 1, 'R');
+      // quantidade, valor unitário, subtotal     
+      $pdf->setFont('Helvetica', 'B', 7);
+      $pdf->Cell(16, 3, 'QTDE', 0, 0, 'C');
+      $pdf->Cell(16, 3, 'V. UNIT', 0, 0, 'C');
+      $pdf->Cell(16, 3, 'TOTAL', 0, 1, 'C');
+
+      $pdf->setFont('Helvetica', '', 7);
+      $pdf->Cell(16, 3, $item->quantity, 'B', 0, 'C');
+      $pdf->Cell(16, 3, $item->unit_price, 'B', 0, 'C');
+      $pdf->Cell(16, 3, $item->subtotal, 'B', 1, 'C');
+      $pdf->Ln(0);
     }
 
     // Total
