@@ -15,6 +15,10 @@ class InvoiceController extends Controller
       return $this->container->view->render($response, 'invoice.twig');
   }
 
+  private function generateRandomHash($length = 23) {
+    return substr(bin2hex(random_bytes($length)), 0, $length);
+  }
+
   public function create($request, $response)
   {
     $data = $request->getParsedBody();
@@ -22,6 +26,8 @@ class InvoiceController extends Controller
     // Dividir o JSON em duas partes, uma para os dados do invoice, outra para produtos
     $generalData = $data['generalData'];
     $productsData = $data['productsData'];
+
+    $hash = $this->generateRandomHash(23);
 
     try {
       $invoice = Invoice::create([
@@ -31,8 +37,8 @@ class InvoiceController extends Controller
         'discount' => $generalData['discount'],
         'payment_type' => $generalData['payment'],
         'observation' => $generalData['obs'],
-        'hash' => 'g5s4g5s4g5s4g6sh4er654h',
-        'qr_code_hash' => 'g5s4g5s4g5s4g6sh4er654h',
+        'hash' => $hash,
+        'qr_code_hash' => $hash,
         'datetime' => date('Y-m-d H:i:s')
       ]);
 
@@ -109,7 +115,7 @@ class InvoiceController extends Controller
     $pdf->SetFont('Helvetica', '', 8);
     $pdf->Cell(0, 7, "CNPJ: " . $invoice->company->cnpj, 0, 1, 'L');
     $pdf->Cell(0, 0, "CF/DF:" . $invoice->company->ie_cfdf, 0, 1, 'L');
-    $pdf->Cell(0, 7, $invoice->company->address . ", " . $invoice->company->number, 0, 1, 'L');
+    $pdf->Cell(0, 7, utf8_decode($invoice->company->address) . ", " . utf8_decode($invoice->company->number), 0, 1, 'L');
     $pdf->Cell(0, 0, "CEP: " . $invoice->company->postal_code, 0, 1, 'L');
     $pdf->Cell(0, 7, utf8_decode($invoice->company->district), 0, 1, 'L');
     $pdf->Cell(0, 0, utf8_decode($invoice->company->city) . " - " . $invoice->company->state, 0, 1, 'L');
@@ -124,7 +130,7 @@ class InvoiceController extends Controller
 
     $pdf->SetFont('Helvetica', '', 8);
     $pdf->Cell(0, 7, "Data: " . date("d/m/Y H:i:s", strtotime($invoice->datetime)), 0, 1, 'L');
-    $pdf->Cell(0, 0, "Tipo de pagamento: " . $invoice->payment_type, 0, 1, 'L');
+    $pdf->Cell(0, 0, "Tipo de pagamento: " . utf8_decode($invoice->payment_type), 0, 1, 'L');
     $pdf->Ln(2);
 
     $pdf->SetFont('Courier', 'B', 8);
@@ -148,16 +154,30 @@ class InvoiceController extends Controller
 
       $pdf->setFont('Helvetica', '', 7);
       $pdf->Cell(16, 3, $item->quantity, 'B', 0, 'C');
-      $pdf->Cell(16, 3, $item->unit_price, 'B', 0, 'C');
-      $pdf->Cell(16, 3, $item->subtotal, 'B', 1, 'C');
-      $pdf->Ln(0);
+      $pdf->Cell(16, 3, number_format($item->unit_price, 2, ',', '.'), 'B', 0, 'C');
+      $pdf->Cell(16, 3, number_format($item->subtotal, 2, ',', '.'), 'B', 1, 'C');
+      $pdf->Ln(1);
     }
 
-    // Total
-    $pdf->Ln(5);
-    $pdf->SetFont('Arial', 'B', 10);
-    $pdf->Cell(50, 5, 'TOTAL:', 0, 0, 'R');
-    $pdf->Cell(15, 5, '15.00', 0, 1, 'R');
+    $pdf->SetFont('Helvetica', 'B', 8);
+    $pdf->Cell(0, 7, utf8_decode("Observações:"), 0, 1, 'L');
+    $pdf->SetFont('Helvetica', '', 8);
+    //$pdf->Cell(0, 0, utf8_decode($invoice->observation), 0, 1, 'L');
+    $pdf->MultiCell(49.5, 2.5, utf8_decode($invoice->observation), 0, 'L');
+    $pdf->Ln(2);
+
+    $pdf->SetFont('Helvetica', 'B', 8);
+    $pdf->Cell(0, 7, 'SUBTOTAL: R$ ' . number_format(($invoice->total + $invoice->discount), 2, ',', '.'), 0, 1, 'R');
+    $pdf->Cell(0, 0, 'DESCONTOS: R$ ' . number_format(($invoice->discount), 2, ',', '.'), 0, 1, 'R');
+    $pdf->Cell(0, 7, 'TOTAL: R$ ' . number_format(($invoice->total), 2, ',', '.'), 0, 1, 'R');
+    $pdf->Ln(4);
+
+    // Chave de acesso HASH
+    $pdf->SetFont('Courier', '', 7);
+    $pdf->Cell(0, 7, 'CHAVE DE ACESSO', 0, 1, 'C');
+    $pdf->SetFont('Courier', 'B', 7);
+    $pdf->Cell(0, 0, $invoice->hash, 0, 1, 'C');
+
 
     // Mensagem final
     $pdf->Ln(10);
