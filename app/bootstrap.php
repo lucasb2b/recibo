@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Contracts\Pagination\Paginator;
+
 session_start();
 
 date_default_timezone_set('America/Sao_Paulo');
@@ -52,8 +54,11 @@ $container['auth'] = function($container){
 $container['view'] = function($container) {
   
   $view = new Slim\Views\Twig(__DIR__ . "/../resources/views", [
-    'cache' => false
+    'cache' => false,
+    'debug' => true,
   ]);
+
+  $view->getEnvironment()->addExtension(new \Twig\Extension\DebugExtension());
 
   $view->addExtension(new \Slim\Views\TwigExtension(
     $container->router,

@@ -101,7 +101,7 @@ class InvoiceController extends Controller
       ->first();
 
 
-    $pdf = new FPDF('P', 'mm', [48, 297]); // Configurar página para 58mm de largura
+    $pdf = new FPDF('P', 'mm', [48, 225]); // Configurar página para 58mm de largura
     $pdf->SetMargins(0, 2, 0); // Margens
     $pdf->AddPage();
 
@@ -183,7 +183,7 @@ class InvoiceController extends Controller
     $pdf->Ln(10);
     $pdf->SetFont('Arial', '', 9);
     $pdf->Cell(0, 5, 'Obrigado pela preferencia!', 0, 1, 'C');
-    $pdf->Cell(0, 5, 'Volte sempre!', 0, 1, 'C');
+    $pdf->Cell(0, 0, 'Volte sempre!', 0, 1, 'C');
 
     // Saída
     $pdf->Output();

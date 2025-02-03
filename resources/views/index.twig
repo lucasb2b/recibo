@@ -1,114 +1,144 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" type="text/css" href="{{ base_url }}/css/bootstrap.min.css"/>
-  <link rel="stylesheet" href="{{ base_url }}/libs/fontawesome-free-5.15.4-web/css/all.min.css">
-  <link rel="stylesheet" href="{{ base_url }}/libs/fontawesome-free-5.15.4-web/js/all.min.js">
-  <script src="{{ base_url }}/libs/jquery-3.7.1.min.js"></script>
-  <script src="{{ base_url }}/js/bootstrap.min.js"></script>
-  <title>Home - Recibo</title>
-</head>
-<body style="background-color: #d6d6d6">
-<header class="p-2" style="background-color: #783d12;">
-  <div class="container">
-    <img src="{{ base_url }}/img/Tipografia.png" class="img-fluid mx-auto d-block" style="width: 40%; padding: 15px; border-radius: 5px" alt="Logo Cabeçote 100%"/>
-  </div>
-</header>
-  <nav class="navbar navbar-expand-lg navbar-light mb-5" style="background-color: #FFA006;">
-    <a class="navbar-brand" href="#">Cabeçote 100%</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarText">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="{{ path_for('home') }}">Home <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{ path_for('company.index') }}">Empresa</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Cliente</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Produtos e Serviços</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Recibos</a>
-        </li>
-      </ul>
-      <span class="navbar-text">
-        <i>Sistema para emissão de recibos</i>
-      </span>
-    </div>
-  </nav>
-  <h4 class="text-center" style="margin-top: -30px">Bem vindo ao sistema de emissão recibos</h4>
-  <h6 class="text-center" style="margin-top:0">Últimos recibos emitidos</h6>
+<lang="pt-BR">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" type="text/css" href="{{ base_url }}/css/bootstrap.min.css"/>
+		<link rel="stylesheet" href="{{ base_url }}/libs/fontawesome-free-5.15.4-web/css/all.min.css">
+		<link rel="stylesheet" href="{{ base_url }}/libs/fontawesome-free-5.15.4-web/js/all.min.js">
+		<script src="{{ base_url }}/libs/jquery-3.7.1.min.js"></script>
+		<script src="{{ base_url }}/js/bootstrap.min.js"></script>
+		<title>Home - Recibo</title>
+	</head>
+	<body style="background-color: #d6d6d6">
+		<header class="p-2" style="background-color: #783d12;">
+			<div class="container">
+				<img src="{{ base_url }}/img/Tipografia.png" class="img-fluid mx-auto d-block" style="width: 40%; padding: 15px; border-radius: 5px" alt="Logo Cabeçote 100%"/>
+			</div>
+		</header>
+		<nav class="navbar navbar-expand-lg navbar-light mb-5" style="background-color: #FFA006;">
+			<a class="navbar-brand" href="#">Cabeçote 100%</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarText">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active">
+						<a class="nav-link" href="{{ path_for('home') }}">Home
+							<span class="sr-only">(current)</span>
+						</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path_for('company.index') }}">Empresa</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Cliente</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Produtos e Serviços</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Recibos</a>
+					</li>
+				</ul>
+				<span class="navbar-text">
+					<i>Sistema para emissão de recibos</i>
+				</span>
+			</div>
+		</nav>
+		<h4 class="text-center" style="margin-top: -30px">Bem vindo ao sistema de emissão recibos</h4>
+		<h6 class="text-center" style="margin-top:0">Últimos recibos emitidos</h6>
 
-  <div class="container">
-    {% include "components/notifications.twig" %}
-    <table class="table table-hover table-dark">
-      <thead>
-        <tr>
-          <th scope="col">#</th>
-          <th scope="col">Nome do Cliente</th>
-          <th scope="col">Data e Hora</th>
-          <th scope="col">Forma de pagamento e Total</th>
-          <th scope="col">Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-      {% for invoice in invoices %}
-        <tr>
-          <td>{{ loop.index }}</td>
-          <td>{{ invoice.customer.customer_name}}</td>
-          <td>{{ invoice.datetime|date('d/m/Y H:i') }}</td>
-          <td>{{ invoice.payment_type }} - <i>R$ {{ invoice.total|number_format(2, ',', '.')}}</i></td>
-          <td>
-          <a href="{{ path_for('invoice.print', { 'hash': invoice.hash }) }}" class="btn btn-warning">Imprimir</a>
-          <a href="#" class="btn btn-danger">Visualizar</a>
-          </td>
-        </tr>
-      {% else %}
-      {% endfor %}
-      </tbody>
-    </table>
-  </div>
+		<div class="container">
+			{% include "components/notifications.twig" %}
+			<table class="table table-hover table-dark">
+				<thead>
+					<tr>
+						<th scope="col">#</th>
+						<th scope="col">Nome do Cliente</th>
+						<th scope="col">Data e Hora</th>
+						<th scope="col">Forma de pagamento e Total</th>
+						<th scope="col">Ações</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for invoice in invoices %}
+						<tr>
+							<td>{{ loop.index }}</td>
+							<td>{{ invoice.customer.customer_name}}</td>
+							<td>{{ invoice.datetime|date('d/m/Y H:i') }}</td>
+							<td>{{ invoice.payment_type }}
+								-
+								<i>R$
+									{{ invoice.total|number_format(2, ',', '.')}}</i>
+							</td>
+							<td>
+								<a href="{{ path_for('invoice.print', { 'hash': invoice.hash }) }}" class="btn btn-warning">Imprimir</a>
+								<a href="#" class="btn btn-danger">Visualizar</a>
+							</td>
+						</tr>
+						{% else %}
+					{% endfor %}
+				</tbody>
+			</table>
 
-  <hr>
-  
-  <h4 class="text-center">Algumas tarefas</h4>
-  <div class="container mb-5">
+			<!-- Page -->
+			<nav aria-label="Page navigation example">
+				<ul class="pagination">
+					{% if invoices.currentPage() > 1 %}
+						<li class="page-item">
+							<a class="page-link" href="{{ invoices.previousPageUrl() }}">Anterior</a>
+						</li>
+					{% endif %}
 
-  <div class="row justify-content-center">
+					{% for page in 1..invoices.lastPage() %}
+						<li class="page-item">
+							<a class="page-link" href="{{ invoices.url(page) }}">{{ page }}</a>
+						</li>
+					{% endfor %}
 
-    <div class="col-md-3 m-2">
+					{% if invoices.hasMorePages() %}
+						<li class="page-item">
+							<a class="page-link" href="{{ invoices.nextPageUrl() }}">Próxima</a>
+						</li>
+					{% endif %}
+				</ul>
+			</nav>
+			<!-- Page -->
+		</div>
 
-      <div class="card text-center" style="width: 18rem;">
-      <div class="card-body">
-        <h5 class="card-title">Gerenciar Clientes</h5>
-        <p class="card-text">Cadastre, edite e exclua um cliente para gerenciar.</p>
-        <a href="#" class="btn btn-primary"><i class="fas fa-user"></i>&nbsp;Gerenciar Clientes</a>
-      </div>
+		<hr>
 
-    </div>
+		<h4 class="text-center">Algumas tarefas</h4>
+		<div class="container mb-5">
 
-    </div>
-    <div class="col-md-3 m-2">
-      <div class="card text-center" style="width: 18rem;">
-        <div class="card-body">
-          <h5 class="card-title">Produtos e Serviços</h5>
-          <p class="card-text">Cadastre e edite produtos, apague e gerencie produtos!</p>
-          <a href="#" class="btn btn-primary"><i class="fas fa-hand-holding-usd"></i>&nbsp;Produtos e Serviços</a>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-  </div>
+			<div class="row justify-content-center">
 
-</div>
-</body>
-</html>
+				<div class="col-md-3 m-2">
+
+					<div class="card text-center" style="width: 18rem;">
+						<div class="card-body">
+							<h5 class="card-title">Gerenciar Clientes</h5>
+							<p class="card-text">Cadastre, edite e exclua um cliente para gerenciar.</p>
+							<a href="#" class="btn btn-primary">
+								<i class="fas fa-user"></i>&nbsp;Gerenciar Clientes</a>
+						</div>
+
+					</div>
+
+				</div>
+				<div class="col-md-3 m-2">
+					<div class="card text-center" style="width: 18rem;">
+						<div class="card-body">
+							<h5 class="card-title">Produtos e Serviços</h5>
+							<p class="card-text">Cadastre e edite produtos, apague e gerencie produtos!</p>
+							<a href="#" class="btn btn-primary">
+								<i class="fas fa-hand-holding-usd"></i>&nbsp;Produtos e Serviços</a>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</body>
+</div></body></html>
