@@ -32,13 +32,13 @@
 						<a class="nav-link" href="{{ path_for('company.index') }}">Empresa</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#">Cliente</a>
+						<a class="nav-link" href="{{ path_for('customer.index') }}">Cliente</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#">Produtos e Serviços</a>
+						<a class="nav-link" href="{{ path_for('productService.index') }}">Produtos e Serviços</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" href="#">Recibos</a>
+						<a class="nav-link" href="{{ path_for('invoice.index') }}">Recibos</a>
 					</li>
 				</ul>
 				<span class="navbar-text">
@@ -120,7 +120,7 @@
 						<div class="card-body">
 							<h5 class="card-title">Gerenciar Clientes</h5>
 							<p class="card-text">Cadastre, edite e exclua um cliente para gerenciar.</p>
-							<a href="#" class="btn btn-primary">
+							<a href="{{ path_for('customer.index') }}" class="btn btn-primary">
 								<i class="fas fa-user"></i>&nbsp;Gerenciar Clientes</a>
 						</div>
 
@@ -132,7 +132,7 @@
 						<div class="card-body">
 							<h5 class="card-title">Produtos e Serviços</h5>
 							<p class="card-text">Cadastre e edite produtos, apague e gerencie produtos!</p>
-							<a href="#" class="btn btn-primary">
+							<a href="{{ path_for('productService.index') }}" class="btn btn-primary">
 								<i class="fas fa-hand-holding-usd"></i>&nbsp;Produtos e Serviços</a>
 						</div>
 					</div>

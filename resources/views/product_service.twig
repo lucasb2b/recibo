@@ -30,13 +30,13 @@
           <a class="nav-link" href="{{ path_for('company.index') }}">Empresa</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Cliente</a>
+          <a class="nav-link" href="{{ path_for('customer.index') }}">Cliente</a>
         </li>
         <li class="nav-item active">
-          <a class="nav-link" href="#">Produtos e Serviços<span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="{{ path_for('productService.index') }}">Produtos e Serviços<span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Recibos</a>
+          <a class="nav-link" href="{{ path_for('invoice.index') }}">Recibos</a>
         </li>
       </ul>
       <span class="navbar-text">
@@ -77,6 +77,7 @@
         </div>
       </div>
     </form>
+    <a href="{{ path_for('productService.manager')}}" class="btn btn-secondary">Gerenciar Produtos e Serviços</a>
   </div>
 </body>
 </html>

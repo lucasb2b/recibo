@@ -5,10 +5,12 @@ namespace App\Controllers;
 use App\Models\ProductService;
 use Respect\Validation\Validator as v;
 
-class ProductServiceController extends Controller {
-  
-  public function productService($request, $response){
-    if($request->isGet())
+class ProductServiceController extends Controller
+{
+
+  public function productService($request, $response)
+  {
+    if ($request->isGet())
       return $this->container->view->render($response, 'product_service.twig');
 
     $validation = $this->container->validator->validate($request, [
@@ -17,23 +19,24 @@ class ProductServiceController extends Controller {
       'units' => v::notEmpty(),
     ]);
 
-    if($validation->failed()){
+    if ($validation->failed()) {
       $this->container->flash->addMessage('error', 'Houve um erro');
       return $response->withRedirect($this->container->router->pathFor('customer.index'));
-    }else{
+    } else {
       ProductService::create([
         'product_service' => $request->getParam('product_service'),
         'type' => $request->getParam('item-type'),
         'price' => $request->getParam('price'),
         'units' => $request->getParam('units')
       ]);
-    $this->container->flash->addMessage('success', 'Produto ou serviço adicionado com sucesso!');
+      $this->container->flash->addMessage('success', 'Produto ou serviço adicionado com sucesso!');
     }
 
     return $response->withRedirect($this->container->router->pathFor('productService.index'));
   }
 
-  private function getAllProductsServices(){
+  private function getAllProductsServices()
+  {
     $productsServices = [
       'productsServices' => ProductService::where('is_active', true)->get()
     ];
@@ -41,13 +44,18 @@ class ProductServiceController extends Controller {
     return $productsServices;
   }
 
-  public function managerProductService($request, $response){
-    if($request->isGet())
-      $productsServices = $this->getAllProductsServices();
-      return $this->container->view->render($response, 'manager_product_service.twig', $productsServices);
+  public function managerProductService($request, $response)
+  {
+    if ($request->isGet())
+    $page = (int) ($request->getQueryParams()['page'] ?? 1);
+    $limit = 2;
+
+    $productsServices = ProductService::where('is_active', true)->paginate($limit, ['*'], 'page', $page);
+    return $this->container->view->render($response, 'manager_product_service.twig', ['productsServices' => $productsServices]);
   }
 
-  public function edit($request, $response, $params){
+  public function edit($request, $response, $params)
+  {
     $data = [
       'productService' => ProductService::where('id_product_service', $params['id'])->get()
     ];
@@ -55,7 +63,8 @@ class ProductServiceController extends Controller {
     return $this->container->view->render($response, 'edit_product_service.twig', $data);
   }
 
-  public function update($request, $response, $params){
+  public function update($request, $response, $params)
+  {
     $productService = ProductService::find($params['id']);
 
     $validation = $this->container->validator->validate($request, [
@@ -64,10 +73,10 @@ class ProductServiceController extends Controller {
       'units' => v::notEmpty(),
     ]);
 
-    if($validation->failed()){
+    if ($validation->failed()) {
       $this->container->flash->addMessage('error', 'Erro ao editar produto ou serviço!');
       return $response->withRedirect($this->container->router->pathFor('productService.edit', ['id' => $productService->id_product_service]));
-    }else{
+    } else {
       $productService->update([
         'product_service' => $request->getParam('product_service'),
         'type' => $request->getParam('item-type'),
@@ -79,10 +88,11 @@ class ProductServiceController extends Controller {
     }
   }
 
-  public function delete($request, $response, $params){
+  public function delete($request, $response, $params)
+  {
     $productService = ProductService::find($params['id']);
-    
-    if($productService){
+
+    if ($productService) {
       $productService->update([
         'is_active' => false
       ]);
@@ -94,7 +104,8 @@ class ProductServiceController extends Controller {
     }
   }
 
-  public function allProductsServices($request, $response){
+  public function allProductsServices($request, $response)
+  {
     $productsServices = [
       'productsServices' => ProductService::where('is_active', true)->get()
     ];
@@ -102,7 +113,8 @@ class ProductServiceController extends Controller {
     return $response->withJson($productsServices);
   }
 
-  public function findById($request, $response){
+  public function findById($request, $response)
+  {
 
     $idProduct = $request->getParam('product_id');
 

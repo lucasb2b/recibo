@@ -29,14 +29,14 @@
         <li class="nav-item">
           <a class="nav-link" href="{{ path_for('company.index') }}">Empresa</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{ path_for('customer.index') }}">Cliente</a>
+        </li>
         <li class="nav-item active">
-          <a class="nav-link" href="#">Cliente<span class="sr-only">(current)</span></a>
+          <a class="nav-link" href="{{ path_for('productService.index') }}">Produtos e Serviços<span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Produtos e Serviços</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Recibos</a>
+          <a class="nav-link" href="{{ path_for('invoice.index') }}">Recibos</a>
         </li>
       </ul>
       <span class="navbar-text">
@@ -78,6 +78,32 @@
       {% endfor %}
       </tbody>
     </table>
+
+    <!-- Page -->
+			<nav aria-label="Page navigation example">
+				<ul class="pagination">
+					{% if productsServices.currentPage() > 1 %}
+						<li class="page-item">
+							<a class="page-link" href="{{ path_for('productService.manager', {}, {'page': productsServices.previousPageUrl()|split('=')|last }) }}">Anterior</a>
+						</li>
+					{% endif %}
+
+					{% for page in 1..productsServices.lastPage() %}
+						<li class="page-item {% if page == productsServices.currentPage() %}active{% endif %}">
+							<a class="page-link" href="{{ path_for('productService.manager', {}, {'page': page}) }}">{{ page }}</a>
+						</li>
+					{% endfor %}
+
+					{% if productsServices.hasMorePages() %}
+						<li class="page-item">
+							<a class="page-link" href="{{ path_for('productService.manager', {}, {'page': customers.nextPageUrl()|split('=')|last }) }}">Próxima</a>
+						</li>
+					{% endif %}
+				</ul>
+			</nav>
+			<!-- Page -->
+
+    <a href="{{ path_for('productService.index')}}" class="btn btn-secondary">Cadastrar Produtos e Serviços</a>
   </div>
 </body>
 </html>
